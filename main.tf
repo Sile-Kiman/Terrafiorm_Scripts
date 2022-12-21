@@ -11,8 +11,8 @@ terraform{
 #create a providor block
 provider "aws" {
     region = "us-east-2"
-    access_key = "AKIA6KAOWFVQOLBGMRNI"
-    secret_key = "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"
+    access_key = " "
+    secret_key = " "
    
 }
 
