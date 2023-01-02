@@ -11,8 +11,8 @@ terraform{
 #create a providor block
 provider "aws" {
     region = "us-east-2"
-    access_key = " "
-    secret_key = " "
+    access_key = var.access_key
+    secret_key = var.secret_key
    
 }
 
@@ -87,16 +87,61 @@ resource "aws_route_table_association" "myLabRouteTableAss" {
     route_table_id = aws_route_table.myLab_routeTable.id
 }
 
-#Create EC2 Instance to host out applications
-resource "aws_instance" "myLab_EC2_Device" {
-    ami = var.ami
+#Create linux-Jenkins EC2 Instance to host out applications
+resource "aws_instance" "Jenkins_instance" {
+    ami = var.ami[0]
     instance_type = var.instance_type
     key_name = var.Keypair[0]
     security_groups= [aws_security_group.myLab-SG.id]
     subnet_id = aws_subnet.myLab-subnet1.id
     associate_public_ip_address = true
-     
+    user_data = file("./setupJenkins.sh")
     tags = {
-      "Name" = "myLab-Instance"
+      "Name" = "Jenkins-Instance"
     }
  }
+ 
+
+ #Create linux-ansible EC2 Instance to host out applications
+resource "aws_instance" "Ansible_instance" {
+    ami = var.ami[0]
+    instance_type = var.instance_type
+    key_name = var.Keypair[0]
+    security_groups= [aws_security_group.myLab-SG.id]
+    subnet_id = aws_subnet.myLab-subnet1.id
+    associate_public_ip_address = true
+    user_data = file("./ansibleinstall.sh")
+    tags = {
+      "Name" = "Ansible-Instance"
+    }
+ }
+ 
+ /*
+  #Create Ubuntu EC2 Instance to host out applications
+resource "aws_instance" "Ansible_instance-ubuntu" {
+    ami = var.ami[3]
+    instance_type = var.instance_type
+    key_name = var.Keypair[0]
+    security_groups= [aws_security_group.myLab-SG.id]
+    subnet_id = aws_subnet.myLab-subnet1.id
+    associate_public_ip_address = true
+    #user_data = file("./setupJenkins.sh")
+    tags = {
+      "Name" = "Ansible-Instance-ubuntu"
+    }
+ }
+
+   #Create Red Hat EC2 Instance to host out applications
+resource "aws_instance" "Ansible_instance-Red" {
+    ami = var.ami[2]
+    instance_type = var.instance_type
+    key_name = var.Keypair[0]
+    security_groups= [aws_security_group.myLab-SG.id]
+    subnet_id = aws_subnet.myLab-subnet1.id
+    associate_public_ip_address = true
+    #user_data = file("./setupJenkins.sh")
+    tags = {
+      "Name" = "Ansible-Instance-Red Hat"
+    }
+ }
+*/
