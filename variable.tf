@@ -18,12 +18,12 @@ variable "ami" {
 #setup key 
 variable "secret_key" {
     type = string
-    default = "NJhkY730V6SF8IQ/KXqhEpnX5aGPriYQQVbTUfyP"
+    default = " "
   
 }
 variable "access_key" {
     type = string
-    default = "AKIA6KAOWFVQK23DPNEM"
+    default = " "
 }
 #create a range of instance tyoe
 variable "instance_type" {
